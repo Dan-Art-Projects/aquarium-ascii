@@ -11,7 +11,7 @@ const SURFACE_ROWS = 1;
 const FOOD_COUNT   = 6;
 const FOOD_SPEED   = 2.2;
 const SEEK_RANGE   = 26;
-const WATER_BG     = '#061420';
+const DEFAULT_BG   = '#061420';
 const WAVE_COLOR   = '#4DABF7';
 const SAND_TOP     = '#C49A3C';
 const SAND_BOT     = '#7A5C1E';
@@ -152,22 +152,24 @@ const DECORATION_TYPES = [
 // ============================================================
 // UTILITIES
 // ============================================================
-const rand    = (a, b) => Math.random() * (b - a) + a;
-const randInt = (a, b) => Math.floor(rand(a, b + 1));
-const clamp   = (v, a, b) => Math.max(a, Math.min(b, v));
+const rand      = (a, b) => Math.random() * (b - a) + a;
+const randInt   = (a, b) => Math.floor(rand(a, b + 1));
+const clamp     = (v, a, b) => Math.max(a, Math.min(b, v));
+const randomHex = () => '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
 
 // ============================================================
 // RENDERER
 // ============================================================
 class Renderer {
   constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx    = canvas.getContext('2d');
-    this.charW  = 8.4;
-    this.charH  = LINE_HEIGHT;
-    this.cols   = 0;
-    this.rows   = 0;
-    this.cells  = [];
+    this.canvas  = canvas;
+    this.ctx     = canvas.getContext('2d');
+    this.bgColor = DEFAULT_BG;
+    this.charW   = 8.4;
+    this.charH   = LINE_HEIGHT;
+    this.cols    = 0;
+    this.rows    = 0;
+    this.cells   = [];
   }
 
   resize() {
@@ -185,14 +187,14 @@ class Renderer {
 
   resetCells() {
     this.cells = Array.from({ length: this.rows }, () =>
-      Array.from({ length: this.cols }, () => ({ ch: ' ', color: WATER_BG }))
+      Array.from({ length: this.cols }, () => ({ ch: ' ', color: this.bgColor }))
     );
   }
 
   clear() {
     for (let r = 0; r < this.rows; r++)
       for (let c = 0; c < this.cols; c++)
-        this.cells[r][c] = { ch: ' ', color: WATER_BG };
+        this.cells[r][c] = { ch: ' ', color: this.bgColor };
   }
 
   set(col, row, ch, color) {
@@ -212,7 +214,7 @@ class Renderer {
 
   flush() {
     const { ctx, canvas, charW, charH, cols, rows, cells } = this;
-    ctx.fillStyle = WATER_BG;
+    ctx.fillStyle = this.bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.font = FONT;
     ctx.textBaseline = 'top';
@@ -483,6 +485,11 @@ class Aquarium {
     this.foods = []; this.bubbles = [];
   }
 
+  setBgColor(color) {
+    this.renderer.bgColor = color;
+    document.body.style.background = color;
+  }
+
   drawBg() {
     const r = this.renderer;
 
@@ -554,20 +561,25 @@ class Aquarium {
 // ============================================================
 class Toolbar {
   constructor(aq) {
-    this.aq    = aq;
-    this.color = '#FFD700';
+    this.aq          = aq;
+    this.color       = '#FFD700';
+    this.randomColor = false;
     this.build();
+  }
+
+  getColor() {
+    return this.randomColor ? randomHex() : this.color;
   }
 
   build() {
     this.buildSection('fish-items', FISH_TYPES,
-      t => { this.aq.addFish(t, this.color); this.updateStats(); });
+      t => { this.aq.addFish(t, this.getColor()); this.updateStats(); });
     this.buildSection('plant-items', PLANT_TYPES,
-      t => { this.aq.addPlant(t, this.color); this.updateStats(); });
+      t => { this.aq.addPlant(t, this.getColor()); this.updateStats(); });
     this.buildSection('deco-items', DECORATION_TYPES,
-      t => { this.aq.addDecoration(t, this.color); this.updateStats(); });
+      t => { this.aq.addDecoration(t, this.getColor()); this.updateStats(); });
 
-    document.getElementById('btn-feed').onclick = () => this.aq.feedFish();
+    document.getElementById('btn-feed').onclick  = () => this.aq.feedFish();
     document.getElementById('btn-clear').onclick = () => {
       if (confirm('Clear all fish, plants and decorations?')) {
         this.aq.clearAll();
@@ -575,30 +587,66 @@ class Toolbar {
       }
     };
 
-    const preview = document.getElementById('color-preview');
+    // Entity color picker
+    this.preview = document.getElementById('color-preview');
     const picker  = document.getElementById('color-picker');
-    preview.style.background = this.color;
+    this.preview.style.background = this.color;
 
-    // Clicking the preview swatch opens the hidden color picker
-    preview.addEventListener('click', () => picker.click());
+    const openPicker = () => { this.setRandomMode(false); picker.click(); };
+    this.preview.addEventListener('click', openPicker);
     document.getElementById('color-section').querySelector('label')
-      .addEventListener('click', () => picker.click());
+      .addEventListener('click', openPicker);
 
     picker.addEventListener('input', e => {
-      this.color           = e.target.value;
-      preview.style.background = this.color;
+      this.color = e.target.value;
+      this.preview.style.background = this.color;
     });
+
+    // Random color toggle button
+    this.randBtn = document.createElement('button');
+    this.randBtn.className = 'action-btn rand-btn';
+    this.randBtn.title     = 'Random color per item';
+    this.randBtn.textContent = 'Rand';
+    this.randBtn.onclick = () => this.setRandomMode(!this.randomColor);
+    document.getElementById('color-section').appendChild(this.randBtn);
+
+    // Water / background color picker
+    const bgPreview = document.getElementById('bg-color-preview');
+    const bgPicker  = document.getElementById('bg-color-picker');
+    bgPreview.style.background = DEFAULT_BG;
+
+    const openBgPicker = () => bgPicker.click();
+    bgPreview.addEventListener('click', openBgPicker);
+    document.getElementById('bg-color-section').querySelector('label')
+      .addEventListener('click', openBgPicker);
+
+    bgPicker.addEventListener('input', e => {
+      bgPreview.style.background = e.target.value;
+      this.aq.setBgColor(e.target.value);
+    });
+  }
+
+  setRandomMode(on) {
+    this.randomColor = on;
+    if (on) {
+      this.randBtn.classList.add('active');
+      this.preview.style.background =
+        'conic-gradient(red,orange,yellow,green,cyan,blue,violet,red)';
+    } else {
+      this.randBtn.classList.remove('active');
+      this.preview.style.background = this.color;
+    }
   }
 
   buildSection(id, types, onClick) {
     const container = document.getElementById(id);
     types.forEach(t => {
       const btn = document.createElement('button');
-      btn.className = 'entity-btn';
-      btn.title     = t.name;
+      btn.className   = 'entity-btn';
+      btn.title       = t.name;
       btn.style.color = t.defaultColor;
-      btn.innerHTML = `<span class="btn-ascii">${t.label}</span><span class="btn-name">${t.name}</span>`;
-      btn.onclick = () => onClick(t);
+      btn.innerHTML   = `<span class="btn-ascii">${t.label}</span><span class="btn-name">${t.name}</span>`;
+      btn.onclick     = () => onClick(t);
       container.appendChild(btn);
     });
   }

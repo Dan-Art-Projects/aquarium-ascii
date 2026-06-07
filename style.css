@@ -120,7 +120,21 @@ body {
 }
 .action-btn.danger:hover { background: rgba(255, 107, 107, 0.2); }
 
-#color-section {
+.rand-btn {
+  font-size: 11px;
+  padding: 5px 9px;
+  border-color: rgba(180, 100, 255, 0.35);
+  background: rgba(180, 100, 255, 0.08);
+  color: #b47fff;
+}
+.rand-btn:hover { background: rgba(180, 100, 255, 0.2); }
+.rand-btn.active {
+  border-color: rgba(180, 100, 255, 0.8);
+  background: rgba(180, 100, 255, 0.25);
+  box-shadow: 0 0 8px rgba(180, 100, 255, 0.4);
+}
+
+.color-section {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -128,29 +142,31 @@ body {
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
-#color-section label {
+.color-section label {
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
 }
-#color-preview {
+.color-preview {
   width: 22px;
   height: 22px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  background: #FFD700;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color 0.15s;
 }
-#color-picker {
+.color-preview:hover { border-color: rgba(255, 255, 255, 0.5); }
+input[type="color"] {
   width: 0;
   height: 0;
   opacity: 0;
   position: absolute;
   pointer-events: none;
 }
-#color-section label, #color-preview { cursor: pointer; }
 
 #stats {
   padding-left: 12px;
