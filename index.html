@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASCII Aquarium</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toolbar">
+    <div class="toolbar-brand">ASCII Aquarium</div>
+
+    <div class="toolbar-section">
+      <span class="section-label">Fish</span>
+      <div class="toolbar-items" id="fish-items"></div>
+    </div>
+
+    <div class="toolbar-section">
+      <span class="section-label">Plants</span>
+      <div class="toolbar-items" id="plant-items"></div>
+    </div>
+
+    <div class="toolbar-section">
+      <span class="section-label">Decorations</span>
+      <div class="toolbar-items" id="deco-items"></div>
+    </div>
+
+    <div class="toolbar-section actions-section">
+      <span class="section-label">Actions</span>
+      <div class="toolbar-items">
+        <button id="btn-feed" class="action-btn">Feed Fish</button>
+        <button id="btn-clear" class="action-btn danger">Clear All</button>
+      </div>
+    </div>
+
+    <div id="color-section">
+      <label for="color-picker">Color</label>
+      <div id="color-preview"></div>
+      <input type="color" id="color-picker" value="#FFD700">
+    </div>
+
+    <div id="stats">Fish: 0  Plants: 0  Decos: 0</div>
+  </div>
+
+  <canvas id="aquarium-canvas"></canvas>
+
+  <script src="aquarium.js"></script>
+</body>
+</html>
