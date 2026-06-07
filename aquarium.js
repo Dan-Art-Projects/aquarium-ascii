@@ -76,6 +76,96 @@ const FISH_TYPES = [
     leftArt:  ['<~S~S~S~~'],
     speed: 2.8, defaultColor: '#6C5CE7'
   },
+  {
+    id: 'minnow', name: 'Minnow', label: '><>',
+    rightArt: ['><>'],
+    leftArt:  ['<><'],
+    speed: 7.0, defaultColor: '#C0C0C0'
+  },
+  {
+    id: 'sardine', name: 'Sardine', label: '>->',
+    rightArt: ['>->'],
+    leftArt:  ['<-<'],
+    speed: 6.0, defaultColor: '#A8B8C8'
+  },
+  {
+    id: 'swordfish', name: 'Swordfish', label: '---><(>',
+    rightArt: ['---><(((º>'],
+    leftArt:  ['<º)))><---'],
+    speed: 4.5, defaultColor: '#5B8DB8'
+  },
+  {
+    id: 'narwhal', name: 'Narwhal', label: '*><(>',
+    rightArt: ['*--><(((>'],
+    leftArt:  ['<)))<--*'],
+    speed: 2.4, defaultColor: '#B0D8E8'
+  },
+  {
+    id: 'barracuda', name: 'Barracuda', label: '><====>',
+    rightArt: ['><=======>'],
+    leftArt:  ['<=======><'],
+    speed: 7.5, defaultColor: '#607080'
+  },
+  {
+    id: 'catfish', name: 'Catfish', label: '~~><(>',
+    rightArt: ['~~><((º>'],
+    leftArt:  ['<º))><~~'],
+    speed: 1.8, defaultColor: '#8B7355'
+  },
+  {
+    id: 'piranha', name: 'Piranha', label: '><{^>',
+    rightArt: ['><{^{>'],
+    leftArt:  ['<{^{><'],
+    speed: 4.8, defaultColor: '#DC143C'
+  },
+  {
+    id: 'blobfish', name: 'Blobfish', label: '(·_·)',
+    rightArt: ['><(·_·)>'],
+    leftArt:  ['<(·_·)<'],
+    speed: 0.7, defaultColor: '#FFB6C1'
+  },
+  {
+    id: 'lantern', name: 'Lanternfish', label: '·><(>',
+    rightArt: ['·><(((>'],
+    leftArt:  ['<)))<·'],
+    speed: 2.0, defaultColor: '#00CED1'
+  },
+  {
+    id: 'snapper', name: 'Snapper', label: '><(v>',
+    rightArt: ['><(((v>'],
+    leftArt:  ['<v)))><'],
+    speed: 3.8, defaultColor: '#E8A020'
+  },
+  {
+    id: 'seahorse', name: 'Seahorse', label: ',~,',
+    rightArt: [' ,~, ', ' (º) ', '  )( ', '  )( ', '  \\/ '],
+    leftArt:  [' ,~, ', ' (º) ', '  )( ', '  )( ', '  \\/ '],
+    speed: 0.6, defaultColor: '#DDA0DD', vertical: true
+  },
+  {
+    id: 'whale', name: 'Whale', label: 'º)\\~',
+    rightArt: ['   _____  ', '  /  º   \\', ' |        \\___~', '  \\_________/ '],
+    leftArt:  ['   _____  ', '  /   º  \\', '~___/        | ', '   \\_________/'],
+    speed: 0.7, defaultColor: '#3A6EA5'
+  },
+  {
+    id: 'turtle', name: 'Turtle', label: '_(oo)_',
+    rightArt: ['   __   ', ' _(oo)_ ', ' \\____/ '],
+    leftArt:  ['   __   ', ' _(oo)_ ', ' \\____/ '],
+    speed: 1.0, defaultColor: '#2E8B57'
+  },
+  {
+    id: 'manta', name: 'Manta Ray', label: '\\/~',
+    rightArt: ['\\       / ', ' \\     /  ', '  \\___/~~~'],
+    leftArt:  [' \\       /', '  \\     / ', '~~~\\___/  '],
+    speed: 2.5, defaultColor: '#2C4A6E'
+  },
+  {
+    id: 'octopus', name: 'Octopus', label: '(°°)',
+    rightArt: ['  (°°)  ', ' /|  |\\ ', '~  ~~  ~'],
+    leftArt:  ['  (°°)  ', ' /|  |\\ ', '~  ~~  ~'],
+    speed: 1.1, defaultColor: '#9370DB', vertical: true
+  },
 ];
 
 const PLANT_TYPES = [
@@ -103,6 +193,46 @@ const PLANT_TYPES = [
     id: 'fern', name: 'Fern', label: '\\v/',
     art: [' \\v/ ', ' /v\\ ', ' \\v/ ', '  |  '],
     defaultColor: '#27AE60'
+  },
+  {
+    id: 'seagrass', name: 'Sea Grass', label: '|||',
+    art: ['||  ||', '||  ||', '||  ||', '||  ||', '||  ||'],
+    defaultColor: '#7EC850'
+  },
+  {
+    id: 'fanCoral', name: 'Fan Coral', label: '\\|/\\|/',
+    art: ['\\|/\\|/\\|/', ' \\|/ \\|/ ', '  \\   /  ', '   \\ /   ', '    |    '],
+    defaultColor: '#FF8C69'
+  },
+  {
+    id: 'tubeWorms', name: 'Tube Worms', label: '(*)(*)' ,
+    art: ['(*)(*)(*)', ' |  |  | ', ' |  |  | ', '[========]'],
+    defaultColor: '#FF69B4'
+  },
+  {
+    id: 'bubbleAlgae', name: 'Bubble Algae', label: 'O o O',
+    art: [' O  o  O ', ' o  O  o ', '  O  o   ', '   ||||  '],
+    defaultColor: '#90EE90'
+  },
+  {
+    id: 'sponge', name: 'Sea Sponge', label: 'oOoO',
+    art: ['oOoOo', 'OoOoO', 'oOoOo', 'OoOoO', '|||||'],
+    defaultColor: '#FFA500'
+  },
+  {
+    id: 'featherDuster', name: 'Feather Duster', label: '((|))',
+    art: ['(((|)))', ' ((|)) ', '  (|)  ', '   |   '],
+    defaultColor: '#FF1493'
+  },
+  {
+    id: 'brainCoral', name: 'Brain Coral', label: '~^~',
+    art: ['(~^~^~^)', '(~^~^~^)', '(~^~^~^)', '(_______)', ],
+    defaultColor: '#CD853F'
+  },
+  {
+    id: 'softCoral', name: 'Soft Coral', label: 'Y|Y',
+    art: [' Y   Y ', ' |Y Y| ', ' Y|Y|Y ', '  Y|Y  ', '   |   '],
+    defaultColor: '#FF6EB4'
   },
 ];
 
