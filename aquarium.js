@@ -295,6 +295,7 @@ class Renderer {
     this.canvas  = canvas;
     this.ctx     = canvas.getContext('2d');
     this.bgColor = DEFAULT_BG;
+    canvas.style.background = DEFAULT_BG;
     this.charW   = 8.4;
     this.charH   = LINE_HEIGHT;
     this.cols    = 0;
@@ -344,8 +345,7 @@ class Renderer {
 
   flush() {
     const { ctx, canvas, charW, charH, cols, rows, cells } = this;
-    ctx.fillStyle = this.bgColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = FONT;
     ctx.textBaseline = 'top';
     for (let r = 0; r < rows; r++) {
@@ -617,6 +617,7 @@ class Aquarium {
 
   setBgColor(color) {
     this.renderer.bgColor = color;
+    this.renderer.canvas.style.background = color;
     document.body.style.background = color;
   }
 
@@ -727,10 +728,12 @@ class Toolbar {
     document.getElementById('color-section').querySelector('label')
       .addEventListener('click', openPicker);
 
-    picker.addEventListener('input', e => {
+    const onColorChange = e => {
       this.color = e.target.value;
       this.preview.style.background = this.color;
-    });
+    };
+    picker.addEventListener('input',  onColorChange);
+    picker.addEventListener('change', onColorChange);
 
     // Random color toggle button
     this.randBtn = document.createElement('button');
@@ -750,10 +753,12 @@ class Toolbar {
     document.getElementById('bg-color-section').querySelector('label')
       .addEventListener('click', openBgPicker);
 
-    bgPicker.addEventListener('input', e => {
+    const onBgChange = e => {
       bgPreview.style.background = e.target.value;
       this.aq.setBgColor(e.target.value);
-    });
+    };
+    bgPicker.addEventListener('input',  onBgChange);
+    bgPicker.addEventListener('change', onBgChange);
   }
 
   setRandomMode(on) {
